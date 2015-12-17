@@ -22,10 +22,18 @@ app.Todo = Backbone.Model.extend({
     }
 });
 
-
 app.TodoList = Backbone.Collection.extend({
     model: app.Todo,
     localStorage: new Store("backbone-todo")
 });
 
 app.todoList = new app.TodoList();
+
+app.todoView = Backbone.View.extent({
+    tagName: 'li',
+    template: _.template($('#todoItemTemplate').html()),
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+})
