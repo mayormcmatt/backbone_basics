@@ -1,3 +1,25 @@
+// create namespace for todo app
+var app = {}
+
+// MODELS
+app.Todo = Backbone.Model.extend({
+    defaults: {
+        title: '',
+        completed: false
+    }
+});
+
+// COLLECTIONS
+app.TodoList = Backbone.Collection.extend({
+    model: app.Todo,
+    localStorage: new Store("backbone-todo")
+});
+
+// instance of collection
+app.todoList = new app.TodoList();
+
+// VIEWS
+// complete below, erase this comment
 var AppView = Backbone.View.extend({
     el: $('#contentContainer'),
     template: _.template("<h3>Hello <%= who %></h3>"),
@@ -9,31 +31,11 @@ var AppView = Backbone.View.extend({
     }
 });
 
-// initialize the view
-var appView = new AppView();
-
-// create namespace for todo app
-var app = {}
-
-app.Todo = Backbone.Model.extend({
-    defaults: {
-        title: '',
-        completed: false
-    }
-});
-
-app.TodoList = Backbone.Collection.extend({
-    model: app.Todo,
-    localStorage: new Store("backbone-todo")
-});
-
-app.todoList = new app.TodoList();
-
-app.todoView = Backbone.View.extent({
+app.todoView = Backbone.View.extend({
     tagName: 'li',
     template: _.template($('#todoItemTemplate').html()),
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     }
-})
+});
