@@ -19,23 +19,22 @@ app.TodoList = Backbone.Collection.extend({
 app.todoList = new app.TodoList();
 
 // VIEWS
-// complete below, erase this comment
-var AppView = Backbone.View.extend({
-    el: $('#contentContainer'),
-    template: _.template("<h3>Hello <%= who %></h3>"),
-    initialize: function() {
-        this.render();
-    },
-    render: function() {
-        this.$el.html(this.template({who: 'Matt!'}));
+// render individual list item
+app.TodoView = Backbone.View.extend({
+    tagName: 'li',
+    template: _template($('#todoItemTemplate').html()),
+    render: function () {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this; //enable chained calls
     }
 });
 
-app.todoView = Backbone.View.extend({
-    tagName: 'li',
-    template: _.template($('#todoItemTemplate').html()),
-    render: function() {
-        this.$el.html(this.template(this.model.toJSON()));
-        return this;
-    }
-});
+// render full ToDo list, calling TodoView for each
+app.AppView = Backbone.View.extend ({
+    el: '#todoList',
+    initialize: function () {
+        this.input = this.$('#new-todo');
+        app.todoList.on('add', this.addAll, this);
+        app.todoList.on('reset', this.addAll, this);
+        app.todoList.fetch;
+    }, //more to come
