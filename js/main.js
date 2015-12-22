@@ -37,4 +37,32 @@ app.AppView = Backbone.View.extend ({
         app.todoList.on('add', this.addAll, this);
         app.todoList.on('reset', this.addAll, this);
         app.todoList.fetch;
-    }, //more to come
+    },
+    events: {
+        'keypress new-todo': 'createToDoOnEnter'
+    },
+    createToDoOnEnter: function(e) {
+        if (e.which !== 13 || !this.input.val().trim()) {
+            return;
+        }
+        app.todoList.create(this.newAttributes());
+        this.input.val(''); // clean input field
+    },
+    addOne function (todo) {
+        var view = new.app.TodoView({model: Todo});
+        $('#todoList').append(view.render().el);
+    },
+    function addAll () {
+        this.$('#todoList').html(''); // clean up todo list
+        app.todoList.each(addOne, this);
+    },
+    newAttributes: function () {
+        return {
+            title: this.input.val().trim,
+            completed: false
+        }
+    }
+});
+
+// INITIALIZE
+app.appView = new.AppView();
